@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; frame-src 'self' blob: data:; connect-src 'self' https:">
+<title>XAI</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div class="sb-top drag">
+      <button class="ibtn nodrag" id="sbToggle" title="Toggle sidebar (Ctrl+B)"></button>
+      <div class="brand"><span id="brandLogo"></span><span class="brand-name">XAI</span></div>
+    </div>
+    <div class="sb-nav">
+      <button class="sb-btn primary" id="newChatBtn"><span class="sb-ic plusc"></span><span class="lbl">New chat</span></button>
+      <button class="sb-btn" id="searchBtn"><span class="sb-ic" data-ic="search"></span><span class="lbl">Search</span><kbd class="lbl">Ctrl K</kbd></button>
+      <button class="sb-btn" id="chatsBtn"><span class="sb-ic" data-ic="chat"></span><span class="lbl">Chats</span></button>
+      <button class="sb-btn" id="projectsBtn"><span class="sb-ic" data-ic="folder"></span><span class="lbl">Projects</span></button>
+    </div>
+    <div class="sb-scroll">
+      <div class="sb-sec" id="starredSec"><div class="sb-h">Starred</div><div id="starredList"></div></div>
+      <div class="sb-sec"><div class="sb-h">Recents</div><div id="recentList"></div></div>
+    </div>
+    <div class="sb-bottom">
+      <button class="user-btn" id="userBtn">
+        <span class="avatar" id="userAvatar">U</span>
+        <span class="lbl user-meta"><span id="userName">You</span><span class="status"><i id="statusDot"></i><span id="statusText">Connecting...</span></span></span>
+        <span class="sb-ic lbl" data-ic="settings"></span>
+      </button>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header class="topbar drag">
+      <div class="tb-left nodrag"><div id="crumb"></div></div>
+      <div class="tb-right nodrag" id="tbRight"></div>
+    </header>
+    <section id="view"></section>
+  </main>
+
+  <div id="resizer" hidden></div>
+  <aside id="artifact" hidden>
+    <div class="art-head">
+      <div class="art-title"><span id="artIcon"></span><span id="artTitle"></span></div>
+      <div class="seg" id="artTabs"></div>
+      <div class="art-acts" id="artActs"></div>
+    </div>
+    <div class="art-body" id="artBody"></div>
+  </aside>
+</div>
+<div id="dropzone" hidden><div class="dz-card"><div id="dzIcon"></div><b>Drop files here</b><span>Images, PDFs, Word and text or code files</span></div></div>
+<div id="toasts"></div>
+<script src="../node_modules/marked/lib/marked.umd.js"></script>
+<script src="../node_modules/dompurify/dist/purify.min.js"></script>
+<script src="../node_modules/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
