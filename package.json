@@ -1,14 +1,15 @@
 {
   "name": "xai-desktop",
   "productName": "XAI",
-  "version": "1.0.0",
+  "version": "1.1.2",
   "description": "XAI: a local AI desktop assistant for Windows powered by Ollama models",
   "main": "main.js",
   "author": "Datix AI",
   "license": "UNLICENSED",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --win nsis"
+    "dist": "npm test && electron-builder --win nsis --publish never",
+    "test": "node --test tests/"
   },
   "build": {
     "appId": "ai.datix.xai",
@@ -19,29 +20,47 @@
     "files": [
       "main.js",
       "preload.js",
+      "tools.js",
+      "mcp.js",
+      "exec.js",
+      "rag.js",
       "renderer/**",
       "build/icon.png",
+      "build/icon.ico",
       "node_modules/**"
     ],
     "win": {
       "target": [
         "nsis"
       ],
-      "icon": "build/icon.png"
+      "icon": "build/icon.ico"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "shortcutName": "XAI"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "datixai",
+        "repo": "xai"
+      }
+    ]
   },
   "dependencies": {
+    "@babel/standalone": "^7.24.7",
     "@highlightjs/cdn-assets": "^11.9.0",
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "dompurify": "^3.1.6",
+    "electron-updater": "^6.8.11",
     "mammoth": "^1.8.0",
     "marked": "^12.0.2",
-    "pdf-parse": "^1.1.1"
+    "mermaid": "^10.9.1",
+    "pdf-parse": "^1.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "electron": "^45.4.1",
