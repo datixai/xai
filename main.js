@@ -90,7 +90,16 @@ function createWindow() {
   });
   win.loadFile(path.join(__dirname, 'renderer', 'index.html'));
   win.once('ready-to-show', () => { if (!process.argv.includes('--hidden')) win.show(); });
-  win.on('close', (e) => { if (settings.trayOnClose && !app.isQuitting) { e.preventDefault(); win.hide(); } });
+  win.on('close', (e) => {
+    if (!settings.trayOnClose || app.isQuitting) return;
+    e.preventDefault();
+    win.hide();
+    if (!settings.trayHintShown) {
+      settings.trayHintShown = true;
+      const { systemDark, dataDir, version, ...save } = settings; writeJSON(SETTINGS_F, save);
+      try { new (require('electron').Notification)({ title: 'XAI is still running', body: 'It keeps running in the system tray so the quick-entry shortcut works. Click the XAI icon near the clock, or open XAI from the Start menu, to bring it back. To quit, right-click the tray icon and choose Quit XAI.', icon: path.join(__dirname, 'build', 'icon.png') }).show(); } catch {}
+    }
+  });
   win.webContents.setWindowOpenHandler(({ url }) => { if (/^https?:/.test(url)) shell.openExternal(url); return { action: 'deny' }; });
   win.webContents.on('will-navigate', (e, url) => { if (!url.startsWith('file:')) { e.preventDefault(); if (/^https?:/.test(url)) shell.openExternal(url); } });
   // Right click: spelling suggestions + copy/paste
@@ -118,7 +127,7 @@ function registerShortcut() {
 
 const lock = app.requestSingleInstanceLock();
 if (!lock) app.quit();
-app.on('second-instance', () => { if (win) { if (win.isMinimized()) win.restore(); win.focus(); } });
+app.on('second-instance', () => showMain());
 app.whenReady().then(() => { Menu.setApplicationMenu(null); createWindow(); registerShortcut(); createTray(); mcp.connectAll().then(() => win?.webContents.send('mcp:changed')); setupUpdater(); });
 app.on('before-quit', () => { app.isQuitting = true; });
 app.on('will-quit', () => globalShortcut.unregisterAll());
@@ -461,7 +470,7 @@ ipcMain.handle('lib:get', (_e, k) => fs.readFileSync(path.join(__dirname, 'node_
 
 // ---------- tray and quick entry ----------
 let tray, quick;
-function showMain() { if (!win) return; if (win.isMinimized()) win.restore(); win.show(); win.focus(); }
+function showMain() { if (!win) return; if (win.isMinimized()) win.restore(); win.show(); win.moveTop(); win.focus(); }
 function createTray() {
   tray = new Tray(nativeImage.createFromPath(path.join(__dirname, 'build', 'icon.png')).resize({ width: 16, height: 16 }));
   tray.setToolTip('XAI');

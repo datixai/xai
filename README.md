@@ -34,6 +34,9 @@ Chats are stored in `%APPDATA%\XAI\data`.
 Run `dist\XAI Setup <version>.exe` (or silently: `"XAI Setup 1.1.0.exe" /S`). It installs per user to `%LOCALAPPDATA%\Programs\XAI` with Start menu and desktop shortcuts. To pin: open XAI, right-click its taskbar icon, choose **Pin to taskbar**.
 
 ## Changelog
+### 1.1.3 (2026-11-20)
+- Fix: opening XAI from the Start menu, taskbar or desktop while it was hidden in the tray did nothing; it now brings the window back
+- A one-time notice explains that closing the window keeps XAI in the tray, and how to quit
 ### 1.1.2 (2026-11-20)
 - Long dashes are now removed from every reply and chat title automatically (code is left untouched), not only discouraged in the prompt
 - Instructions sent to the model always match the model that actually answers, including after an automatic fallback
